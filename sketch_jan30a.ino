@@ -12,60 +12,37 @@ int zglob_desno = 6;
 int zglob_lijevo = 11;
 
 void setup() {
-  servo[kuk_lijevo].attach(kuk_lijevo, 0, 180);
-  servo[kuk_desno].attach(kuk_desno, 0, 180);
+  Serial.begin(9600);
+  
+  servo[0].attach(kuk_lijevo, 0, 180);
+  servo[1].attach(kuk_desno, 0, 180);
 
-  servo[koljeno_lijevo].attach(koljeno_lijevo, 0, 180);
-  servo[koljeno_desno].attach(koljeno_desno, 0, 180);
+  servo[2].attach(koljeno_lijevo, 0, 180);
+  servo[3].attach(koljeno_desno, 0, 180);
 
-  servo[zglob_lijevo].attach(zglob_lijevo, 0, 180);
-  servo[zglob_desno].attach(zglob_desno, 0, 180);
+  servo[4].attach(zglob_lijevo, 0, 180);
+  servo[5].attach(zglob_desno, 0, 180);
 
   stani();
+
+  delay(1000);
+  double m2[6] = {20,30,40,50,60,70};
+  move(150, m2);
 }
 
 void loop() {
-
-
-  delay(1000);
- 
-  servo[kuk_lijevo].write(65);
-  servo[koljeno_lijevo].write(65);
-  delay(150);
-  servo[kuk_desno].write(65);
-  servo[koljeno_desno].write(65);
-
-
-  delay(50);
-
- 
-  servo[kuk_lijevo].write(111);
-  servo[koljeno_lijevo].write(111);
-  delay(150);
-  servo[kuk_desno].write(111);
-  servo[koljeno_desno].write(111);
-
- delay(1000);
-
- servo[kuk_lijevo].write(-65);
-  servo[koljeno_lijevo].write(-65);
-  delay(150);
-  servo[kuk_desno].write(-65);
-  servo[koljeno_desno].write(-65);
-
-
-  delay(50);
- 
-  servo[kuk_lijevo].write(-111);
-  servo[koljeno_lijevo].write(-111);
-  delay(150);
-  servo[kuk_desno].write(-111);
-  servo[koljeno_desno].write(-111);
-  
-// stani_lijeva();
-// delay(200);
-// stani_desna();
-  delay(0);
+ /* servo[4].write(servo[4].read() + 40);
+  servo[5].write(servo[5].read() - 40);
+  delay(200);
+  servo[4].write(servo[4].read() - 40);
+  servo[5].write(servo[5].read() + 40);
+  delay(200);
+  servo[4].write(servo[4].read() - 40);
+  servo[5].write(servo[5].read() + 40);
+  delay(200);
+  servo[4].write(servo[4].read() + 40);
+  servo[5].write(servo[5].read() - 40);
+  delay(200);*/
 }
 
 void stani() {
@@ -74,47 +51,47 @@ void stani() {
 }
 
 void stani_lijeva() {
-  servo[kuk_lijevo].write(90 - 24);
+  servo[1].write(90 - 24);
 
-  servo[koljeno_lijevo].write(90 - 27);
+  servo[3].write(90 - 27);
 
-  servo[zglob_lijevo].write(90-40);
+  servo[5].write(90-40);
 }
 
 
 void stani_desna() {
-  servo[kuk_desno].write(90 - 32);
+  servo[0].write(90 - 32);
 
-  servo[koljeno_desno].write(90 - 25);
+  servo[2].write(90 - 25);
 
-  servo[zglob_desno].write(90-40);
+  servo[4].write(90-40);
 }
 
 
 void iskorak_lijevo() {
-  servo[kuk_lijevo].write(65);
-  servo[koljeno_lijevo].write(65);
+  servo[1].write(65);
+  servo[3].write(65);
   delay(100);
-  servo[kuk_lijevo].write(111);
-  servo[koljeno_lijevo].write(111);
+  servo[1].write(111);
+  servo[3].write(111);
   
 }
 
 void iskorak_desno() {
-  servo[kuk_desno].write(65);
-  servo[koljeno_desno].write(65);
+  servo[0].write(65);
+  servo[2].write(65);
 
   delay(100);
   
-  servo[kuk_desno].write(111);
-  servo[koljeno_desno].write(111);
+  servo[0].write(111);
+  servo[2].write(111);
   
 }
 
 
 void iskorak_lijevo2() {
-  servo[kuk_lijevo].write(-65);
-  servo[koljeno_lijevo].write(-65);
+  servo[1].write(-65);
+  servo[3].write(-65);
   delay(100);
   servo[kuk_lijevo].write(-111);
   servo[koljeno_lijevo].write(-111);
@@ -130,5 +107,32 @@ void iskorak_desno2() {
   servo[kuk_desno].write(-111);
   servo[koljeno_desno].write(-111);
   
+}
+
+void move(double speed, double m[6]) {
+  double a[6];
+  
+  a[0] = servo[0].read();
+  a[1] = servo[1].read();
+  a[2] = servo[2].read();
+  a[3] = servo[3].read();
+  a[4] = servo[4].read();
+  a[5] = servo[5].read();
+
+  
+   for (int i = 0; i < speed; i++) {
+    Serial.println(millis());
+    for (int j = 0; j < 6; j++) {
+      a[j] += m[j] / speed;
+
+      //Serial.println(j + ' ' + a[j]);
+
+      if (abs(a[j] - servo[j].read()) > 1) {
+        //Serial.println("Pomjerio ");
+        servo[j].write((int)a[j]);
+      }
+    }
+    //delay(1);
+   }
 }
 
