@@ -26,23 +26,18 @@ void setup() {
   stani();
 
   delay(1000);
-  double m2[6] = {20,30,40,50,60,70};
-  move(150, m2);
+
+  //move(1000, -45, -45, -45, -45, 0, 0);
 }
 
 void loop() {
- /* servo[4].write(servo[4].read() + 40);
-  servo[5].write(servo[5].read() - 40);
-  delay(200);
-  servo[4].write(servo[4].read() - 40);
-  servo[5].write(servo[5].read() + 40);
-  delay(200);
-  servo[4].write(servo[4].read() - 40);
-  servo[5].write(servo[5].read() + 40);
-  delay(200);
-  servo[4].write(servo[4].read() + 40);
-  servo[5].write(servo[5].read() - 40);
-  delay(200);*/
+ 
+ move(1000, 0, 0, 0, 0, -10, -10);
+ move(1000, 0, 0, 0, 0, -10, -10);
+ move(2000, 0, -90, 0, -90, 0, 0);
+ move(2000, 0, 0, 0, 0, 20, 20);
+delay(1000000);
+ move(2000, -90, -90, -90, -90, 0, -30);
 }
 
 void stani() {
@@ -55,7 +50,7 @@ void stani_lijeva() {
 
   servo[3].write(90 - 27);
 
-  servo[5].write(90-40);
+  servo[5].write(90- 34);
 }
 
 
@@ -64,7 +59,7 @@ void stani_desna() {
 
   servo[2].write(90 - 25);
 
-  servo[4].write(90-40);
+  servo[4].write(90 - 36);
 }
 
 
@@ -109,19 +104,23 @@ void iskorak_desno2() {
   
 }
 
-void move(double speed, double m[6]) {
-  double a[6];
+void move(double speed, int m1, int m2, int m3, int m4, int m5, int m6) {
+  double a[6], m[6];
+
+  m[0] = m1;
+  m[1] = m2;
+  m[2] = m3;
+  m[3] = m4;
+  m[4] = m5;
+  m[5] = m6;
   
-  a[0] = servo[0].read();
-  a[1] = servo[1].read();
-  a[2] = servo[2].read();
-  a[3] = servo[3].read();
-  a[4] = servo[4].read();
-  a[5] = servo[5].read();
+  for (int i = 0; i < 6; i++) {
+    a[i] = servo[i].read();
+  }
 
   
    for (int i = 0; i < speed; i++) {
-    Serial.println(millis());
+    //Serial.println(millis());
     for (int j = 0; j < 6; j++) {
       a[j] += m[j] / speed;
 
